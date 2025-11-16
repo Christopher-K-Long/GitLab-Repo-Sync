@@ -66,9 +66,6 @@ This generates the unique URL that GitHub will call to start the sync process.
         name: alpine/git:latest
         entrypoint: [""]
 
-      tags:
-        - docker
-
       script:
         - echo "Starting clean-room sync..."
         - git clone --mirror $GITHUB_REPO_URL .
@@ -88,7 +85,7 @@ This generates the unique URL that GitHub will call to start the sync process.
 2.  Click **Add webhook**.
 3.  **Payload URL:** Construct the following URL using the pipeline trigger token from Step 5 and the GitLab project's ID (found under **Settings > General**):
 
-    > `https://gitlab.whiteout-bot.com/api/v4/projects/YOUR_PROJECT_ID/trigger/pipeline?token=YOUR_TRIGGER_TOKEN&ref=main`
+    > `https://gitlab.com/api/v4/projects/YOUR_PROJECT_ID/ref/main/trigger/pipeline?token=YOUR_TRIGGER_TOKEN`
 
 4.  **Content type:** Set to `application/json` and leave SSL verification enabled.
 5.  **Which events would you like to trigger this webhook?** Select **Just the `push` event**.
