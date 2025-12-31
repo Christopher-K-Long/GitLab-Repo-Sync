@@ -1,14 +1,14 @@
 # Guide: Syncing a GitHub Repository to a GitLab Mirror
 
-This guide outlines the method I'm using for setting up a one-way synchronization from a source repository on GitHub to a mirror on GitLab.
+This guide outlines the method I'm using to set up one-way synchronization from a source repository on GitHub to a mirror on GitLab.
 
-Note that there is no release synchronization, at least not yet. Releases need to be created on both platforms manually.
+Note that there is no release synchronization, at least not yet. Releases need to be created manually on both platforms.
 
 ## Part 1: GitLab Project Setup
 
 ### Step 1: Create the GitLab Mirror Project (if not created already)
 1.  On GitLab, navigate to **New project > Create blank project**.
-2.  Give it a descriptive name (e.g., `my-awesome-bot`), ideally matching the Github Repo, and set its visibility.
+2.  Give it a descriptive name (e.g., `my-awesome-bot`), ideally matching the GitHub repository, and set its visibility.
 
 ### Step 2: Configure Branch Protection
 This step is essential to allow the CI/CD job to perform the mirror push, which acts like a force push.
@@ -77,7 +77,15 @@ This generates the unique URL that GitHub will call to start the sync process.
       rules:
         - if: '$CI_PIPELINE_SOURCE == "trigger"'
     ```
-3.  Replace the placeholder URL following GITHUB_REPO_URL with the correct one for the repository.
+2.  Replace the placeholder URL following `GITHUB_REPO_URL` with the correct one for the repository.
+3.  (Optional) Remove the line `GITHUB_REPO_URL: "https://github.com/YOUR-USERNAME/YOUR-SOURCE-REPO.git"` and add `GITHUB_REPO_URL` to the CI/CD variables in GitLab with value `"https://github.com/YOUR-USERNAME/YOUR-SOURCE-REPO.git"`:
+    1.  Return to **Settings > CI/CD** in GitLab.
+    2.  Expand the **Variables** section and click **Add variable**.
+    3.  **Key:** `GITHUB_REPO_URL`
+    4.  **Value:** `"https://github.com/YOUR-USERNAME/YOUR-SOURCE-REPO.git"`.
+    5.  Click **Add variable**.
+    
+    This is helpful when setting up multiple repositories, as the `.gitlab-ci.yml` file will be the same in each repository.
 4.  Commit and push the file to the `main` branch on GitHub. If you instead commit this file to GitLab, the first sync will overwrite it, and the repository will no longer sync.
 
 ### Step 7: Configure the Webhook
