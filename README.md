@@ -48,6 +48,8 @@ This generates the unique URL that GitHub will call to start the sync process.
 3.  Click **Add new token**, give it a description (e.g., `GitHub Sync Trigger`), and click **Create pipeline trigger token**.
 4.  **Important:** Immediately copy the generated trigger token string and store it safely.
 
+## Part 2: GitHub Setup
+
 ### Step 6: Create the `.gitlab-ci.yml` File
 
 1.  Create a new file called `.gitlab-ci.yml` with the following contents:
@@ -76,9 +78,7 @@ This generates the unique URL that GitHub will call to start the sync process.
         - if: '$CI_PIPELINE_SOURCE == "trigger"'
     ```
 3.  Replace the placeholder URL following GITHUB_REPO_URL with the correct one for the repository.
-4.  Commit and push the file to the `main` branch on GitLab.
-
-## Part 2: GitHub Webhook Setup
+4.  Commit and push the file to the `main` branch on GitHub. If you instead commit this file to GitLab, the first sync will overwrite it, and the repository will no longer sync.
 
 ### Step 7: Configure the Webhook
 1.  Go to your GitHub repository's **Settings > Webhooks**.
